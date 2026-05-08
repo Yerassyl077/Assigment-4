@@ -1,6 +1,19 @@
 import java.util.*;
 
-public class Dijkstra {
+/*
+ * TASK 4: Shortest Path Analysis (Edinburgh to Dundee)
+ * Graph weights:
+ * Edin-Stirling: 37, Edin-Perth: 45, Stirling-Perth: 34, Perth-Dundee: 22, Stirling-Glasgow: 27
+ * * Potential Paths:
+ * 1. Edinburgh -> Perth -> Dundee
+ * Distance: 45 (Edin-Perth) + 22 (Perth-Dundee) = 67
+ * 2. Edinburgh -> Stirling -> Perth -> Dundee
+ * Distance: 37 (Edin-Stir) + 34 (Stir-Perth) + 22 (Perth-Dundee) = 93
+ * * Result:
+ * The shortest path is Edinburgh -> Perth -> Dundee with a total distance of 67.
+ */
+
+public class DijkstraSolution {
     static class Edge {
         String target;
         int weight;
@@ -18,7 +31,7 @@ public class Dijkstra {
         addEdge(graph, "Perth", "Dundee", 22);
         addEdge(graph, "Stirling", "Glasgow", 27);
 
-        dijkstra(graph, "Edinburgh", "Dundee");
+        calculateDijkstra(graph, "Edinburgh", "Dundee");
     }
 
     private static void addEdge(Map<String, List<Edge>> g, String u, String v, int w) {
@@ -26,7 +39,7 @@ public class Dijkstra {
         g.computeIfAbsent(v, k -> new ArrayList<>()).add(new Edge(u, w));
     }
 
-    private static void dijkstra(Map<String, List<Edge>> g, String start, String end) {
+    private static void calculateDijkstra(Map<String, List<Edge>> g, String start, String end) {
         Map<String, Integer> dists = new HashMap<>();
         Map<String, String> prev = new HashMap<>();
         PriorityQueue<Edge> pq = new PriorityQueue<>(Comparator.comparingInt(e -> e.weight));
@@ -52,10 +65,7 @@ public class Dijkstra {
         for (String at = end; at != null; at = prev.get(at)) path.add(at);
         Collections.reverse(path);
 
-        System.out.println("Shortest distance: " + dists.get(end));
-        System.out.print("Path: ");
-        for (int i = 0; i < path.size(); i++) {
-            System.out.print(path.get(i) + (i < path.size() - 1 ? " -> " : ""));
-        }
+        System.out.println("Task 5 - Shortest distance: " + dists.get(end));
+        System.out.print("Task 5 - Path: " + String.join(" -> ", path));
     }
 }
